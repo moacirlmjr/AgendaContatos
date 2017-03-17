@@ -64,15 +64,15 @@ public class ContatoDao {
 			List<Contato> list = new ArrayList<Contato>();
 			while (rs.next()) {
 				Contato c = new Contato();
-				c.setId(rs.getInt(0));
-				c.setDataCriacao(rs.getDate(1));
-				c.setDataAtualizacao(rs.getDate(2));
-				c.setNome(rs.getString(3));
-				c.setTelefone(rs.getString(4));
-				c.setCpf(rs.getString(5));
-				c.setRg(rs.getString(6));
-				c.setOrgaoExp(rs.getString(7));
-				c.setEmail(rs.getString(8));
+				c.setId(rs.getInt(1));
+				c.setDataCriacao(rs.getDate(2));
+				c.setDataAtualizacao(rs.getDate(3));
+				c.setNome(rs.getString(4));
+				c.setTelefone(rs.getString(5));
+				c.setCpf(rs.getString(6));
+				c.setRg(rs.getString(7));
+				c.setOrgaoExp(rs.getString(8));
+				c.setEmail(rs.getString(9));
 				list.add(c);
 			}
 
@@ -88,12 +88,12 @@ public class ContatoDao {
 	public void cadastrar(Contato contato) throws Exception {
 		Connection con = ConnectorJdbc.getConnection();
 		try {
-			String sql = "insert into contato(dataCriacao, dataAtualizacao, "
+			String sql = "insert into contato(datacriacao, dataatualizacao, "
 					+ "nome, telefone,cpf,rg,orgaoExp,email) values(?,?,?,?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setDate(1, new java.sql.Date(contato.getDataCriacao()
+			stmt.setTimestamp(1, new java.sql.Timestamp(contato.getDataCriacao()
 					.getTime()));
-			stmt.setDate(2, new java.sql.Date(contato.getDataAtualizacao()
+			stmt.setTimestamp(2, new java.sql.Timestamp(contato.getDataAtualizacao()
 					.getTime()));
 			stmt.setString(3, contato.getNome());
 			stmt.setString(4, contato.getTelefone());
@@ -101,6 +101,7 @@ public class ContatoDao {
 			stmt.setString(6, contato.getRg());
 			stmt.setString(7, contato.getOrgaoExp());
 			stmt.setString(8, contato.getEmail());
+			stmt.execute();
 			stmt.close();
 			con.close();
 		} finally {
@@ -111,11 +112,11 @@ public class ContatoDao {
 	public void update(Contato contato) throws Exception {
 		Connection con = ConnectorJdbc.getConnection();
 		try {
-			String sql = "update contato set dataAtualizacao=?, "
-					+ "nome=?, telefone=?,cpf=?,rg=?,orgaoExp=?,email=? "
-					+ "where id=	" + contato.getId();
+			String sql = "update contato set dataatualizacao=?, "
+					+ "nome=?, telefone=?,cpf=?,rg=?,orgaoexp=?,email=? "
+					+ "where id=" + contato.getId();
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setDate(1, new java.sql.Date(contato.getDataAtualizacao()
+			stmt.setTimestamp(1, new java.sql.Timestamp(contato.getDataAtualizacao()
 					.getTime()));
 			stmt.setString(2, contato.getNome());
 			stmt.setString(3, contato.getTelefone());
@@ -123,6 +124,7 @@ public class ContatoDao {
 			stmt.setString(5, contato.getRg());
 			stmt.setString(6, contato.getOrgaoExp());
 			stmt.setString(7, contato.getEmail());
+			stmt.execute();
 			stmt.close();
 			con.close();
 		} finally {
